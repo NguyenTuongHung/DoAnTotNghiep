@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giới thiệu về chúng tôi</title>
+  <style>
+    body { margin: 0; font-family: 'Inter', Arial, sans-serif; background: #f7f2ea; color: #3a2a1a; }
+    .page { max-width: 1180px; margin: 0 auto; padding: 40px 24px 80px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 40px; }
+    .topbar a { color: #b8935a; text-decoration: none; font-weight: 600; }
+    .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; margin-bottom: 50px; }
+    .hero h1 { font-size: clamp(44px, 5vw, 64px); line-height: 1.05; margin-bottom: 20px; letter-spacing: -0.04em; }
+    .hero p { max-width: 620px; font-size: 17px; line-height: 1.9; color: #5f4f3b; margin-bottom: 28px; }
+    .hero img { width: 100%; border-radius: 28px; object-fit: cover; box-shadow: 0 28px 70px rgba(0,0,0,0.12); }
+    .hero-quote { display: inline-flex; border-left: 4px solid #b8935a; padding-left: 18px; color: #6a5a4a; font-size: 15px; line-height: 1.8; max-width: 540px; }
+    .section { background: white; border-radius: 24px; padding: 38px; box-shadow: 0 28px 60px rgba(0,0,0,0.07); margin-bottom: 36px; }
+    .section h2 { font-size: 30px; margin-bottom: 18px; color: #3a2a1a; }
+    .section p { margin-bottom: 18px; color: #574532; line-height: 1.8; }
+    .section-grid { display: grid; gap: 20px; }
+    .feature-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 20px; }
+    .feature-card { padding: 26px; border-radius: 22px; background: #f7f2ea; border: 1px solid rgba(184,147,90,0.16); min-height: 180px; }
+    .feature-card h3 { margin: 0 0 12px; font-size: 18px; color: #3a2a1a; }
+    .feature-card p { margin: 0; color: #6a5a4a; line-height: 1.75; }
+    .badge { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: rgba(184,147,90,0.14); color: #b8935a; font-weight: 700; margin-bottom: 16px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 32px; border-radius: 14px; background: #3a2a1a; color: white; font-weight: 600; text-decoration: none; transition: transform 0.2s, background 0.2s; }
+    .btn:hover { transform: translateY(-1px); background: #2c1f13; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 18px; }
+    .stat { padding: 26px; background: #f6efe4; border-radius: 22px; }
+    .stat strong { display: block; font-size: 34px; color: #3a2a1a; margin-bottom: 10px; }
+    .stat span { color: #6a5a4a; font-size: 14px; line-height: 1.75; }
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; }
+    .story-card { padding: 24px; border-radius: 22px; background: #f7f2ea; border: 1px solid rgba(184,147,90,0.12); }
+    .story-item { margin-bottom: 18px; }
+    .story-item:last-child { margin-bottom: 0; }
+    .story-item strong { display: block; margin-bottom: 8px; color: #3a2a1a; }
+    .quote-block { display: grid; gap: 20px; padding: 30px; border-radius: 24px; background: #3a2a1a; color: #f7f2ea; }
+    .quote-text { font-size: 20px; line-height: 1.75; }
+    .quote-author { display: inline-flex; align-items: center; gap: 12px; margin-top: 20px; }
+    .quote-author strong { font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; }
+    .feature-list.single { grid-template-columns: 1fr; }
+    @media (max-width: 960px) {
+      .hero, .story-grid { grid-template-columns: 1fr; }
+      .feature-list { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <a href="/">← Trở về trang chủ</a>
+      <a href="/products/phong-khach">Xem ngay bộ sưu tập</a>
+    </div>
+
+    <div class="hero">
+      <div>
+        <h1>Chúng tôi tạo ra những không gian gợi cảm xúc, chứ không chỉ là nội thất.</h1>
+        <p>Từ chiếc ghế lounge êm ái đến bộ bàn ăn đầm ấm, mỗi sản phẩm tại Mộc & Vàng đều được thiết kế để trở thành điểm nhấn của tổ ấm. Chúng tôi kết hợp kỹ thuật thủ công, vật liệu thật và tư duy màu sắc để tạo ra không gian vừa tinh tế vừa gần gũi.</p>
+        <div class="hero-quote">“Nội thất đẹp là khi bạn muốn chạm vào từng chi tiết, khi mỗi góc nhìn đều kể được một câu chuyện riêng.”</div>
+        <a class="btn" href="/products/phong-khach">Khám phá bộ sưu tập</a>
+      </div>
+      <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1000&q=80" alt="Không gian nội thất cao cấp" />
+    </div>
+
+    <div class="section">
+      <h2>Đằng sau mỗi sản phẩm — một câu chuyện được trau chuốt</h2>
+      <div class="feature-list">
+        <div class="feature-card">
+          <div class="badge">01</div>
+          <h3>Thiết kế đậm chất Việt</h3>
+          <p>Chúng tôi lấy cảm hứng từ kiến trúc hiện đại, thiên nhiên và các truyền thống thủ công địa phương để tạo ra sản phẩm vừa sang vừa thân thuộc.</p>
+        </div>
+        <div class="feature-card">
+          <div class="badge">02</div>
+          <h3>Nguyên liệu được chọn kỹ</h3>
+          <p>Mỗi tấm gỗ, mỗi loại vải đều được kiểm tra kỹ lưỡng để đảm bảo độ nặng tay, độ bền và vẻ đẹp tự nhiên xuyên suốt quá trình sử dụng.</p>
+        </div>
+        <div class="feature-card">
+          <div class="badge">03</div>
+          <h3>Hoàn thiện bằng tâm huyết</h3>
+          <p>Đội thợ của chúng tôi dành từng giờ để mài giũa, sơn phủ và may may, đảm bảo mỗi sản phẩm đến tay khách hàng là một tác phẩm hoàn chỉnh.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Hành trình thiết kế của chúng tôi</h2>
+      <div class="story-grid">
+        <div class="story-card">
+          <div class="story-item">
+            <strong>01. Khởi nguồn cảm hứng</strong>
+            <span>Từ không gian thực tiễn của gia đình Việt, chúng tôi lựa chọn những đường nét thanh lịch, màu sắc nhẹ nhàng nhưng vẫn có chiều sâu cảm xúc.</span>
+          </div>
+          <div class="story-item">
+            <strong>02. Lựa chọn vật liệu</strong>
+            <span>Vật liệu tự nhiên, thân thiện môi trường và có độ bền cao luôn là ưu tiên hàng đầu của chúng tôi.</span>
+          </div>
+          <div class="story-item">
+            <strong>03. Chế tác thủ công</strong>
+            <span>Thi công bằng tay tại xưởng, với từng mối nối, đường may và lớp phủ đều được kiểm tra kỹ lưỡng.</span>
+          </div>
+        </div>
+        <div class="quote-block">
+          <div class="quote-text">“Mộc & Vàng đã giúp tôi tạo nên một không gian sống vừa ấm cúng vừa sang trọng. Mỗi sản phẩm đều khiến tôi cảm thấy đây là một phần của căn nhà, không chỉ là món đồ nội thất.”</div>
+          <div class="quote-author">
+            <strong>— Lan Anh, khách hàng hài lòng</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Cam kết của chúng tôi</h2>
+      <div class="feature-list single">
+        <div class="feature-card">
+          <h3>Thiết kế cá nhân hóa</h3>
+          <p>Chúng tôi lắng nghe mong muốn và diện tích thực tế của bạn để gợi ý sản phẩm phù hợp nhất. Bạn có thể chọn kích thước, chất liệu và màu sắc để phù hợp với không gian.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Quy trình minh bạch</h3>
+          <p>Từ gỗ đến bản vẽ, từ xưởng đến giao hàng — mọi bước đều được kiểm soát. Chúng tôi cam kết cung cấp thông tin rõ ràng về nguồn gốc và thời gian hoàn thiện.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Hỗ trợ thiết kế tận tâm</h3>
+          <p>Bạn không chỉ mua sản phẩm, mà còn nhận được lời khuyên về cách phối màu, lắp đặt và bảo quản để mỗi món đồ luôn giữ vẻ đẹp như mới.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Vì sao khách hàng yêu thích Mộc & Vàng</h2>
+      <div class="stats">
+        <div class="stat">
+          <strong>95%</strong>
+          <span>Khách hàng đánh giá chất lượng và dịch vụ vượt mong đợi.</span>
+        </div>
+        <div class="stat">
+          <strong>4.9/5</strong>
+          <span>Đánh giá trung bình sau khi trải nghiệm mua hàng và lắp đặt nội thất.</span>
+        </div>
+        <div class="stat">
+          <strong>1-2 tuần</strong>
+          <span>Thời gian hoàn thiện nhanh chóng cho các đơn hàng đặt làm theo yêu cầu.</span>
+        </div>
+      </div>
+      <a class="btn" href="/products/phong-khach">Khám phá ngay hôm nay</a>
+    </div>
+  </div>
+</body>
+</html>

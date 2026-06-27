@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -284,6 +284,41 @@
     color: var(--cream); margin-bottom: 6px;
   }
   .collection-card-count { font-size: 11px; color: rgba(245,240,232,0.6); letter-spacing: 0.08em; }
+
+  .category-section {
+    max-width: 1440px; margin: 0 auto 32px; padding: 0 48px;
+  }
+  .category-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  }
+  .category-card {
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 170px; padding: 24px; border: 1px solid var(--border-subtle);
+    background: linear-gradient(135deg, rgba(184,147,90,0.12), rgba(250,247,242,0.95));
+    text-decoration: none; color: var(--walnut); transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .category-card:hover {
+    transform: translateY(-4px); box-shadow: 0 16px 36px rgba(58,42,26,0.08);
+  }
+  .category-pill {
+    display: inline-flex; align-self: flex-start; padding: 6px 10px; border-radius: 999px;
+    background: rgba(58,42,26,0.08); color: var(--gold); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .category-title {
+    font-family: var(--font-serif); font-size: 24px; font-weight: 300; margin: 16px 0 8px;
+  }
+  .category-desc {
+    font-size: 12px; color: var(--muted); line-height: 1.7;
+  }
+  .category-count {
+    margin-top: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
 
   /* ─── BESTSELLERS ─── */
   .bestsellers { padding: 80px 0; background: var(--cream); }
@@ -1164,6 +1199,19 @@
   </div>
 </section>
 
+<section class="category-section" aria-label="Danh mục sản phẩm">
+  <div class="category-grid">
+    <a th:each="summary : ${categorySummaries}" th:href="@{'/products/' + ${summary.slug}}" class="category-card">
+      <span class="category-pill" th:text="${summary.pill}">Sofa & Ghế</span>
+      <div>
+        <div class="category-title" th:text="${summary.name}">Phòng Khách</div>
+        <div class="category-desc" th:text="${summary.description}">Sofa, ghế thư giãn, bàn trà và phụ kiện sang trọng.</div>
+        <div class="category-count" th:text="${summary.count} + ' sản phẩm'">5 sản phẩm</div>
+      </div>
+    </a>
+  </div>
+</section>
+
 <!-- ═══════════════════════════════════════════
      BESTSELLERS
 ════════════════════════════════════════════ -->
@@ -1208,7 +1256,7 @@
           </div>
         </div>
         <div class="product-info">
-          <div class="product-name">Sofa Wabi 2 Chỗ</div>
+          <div class="product-name"><a href="/product/sofa-wabi-2-cho" style="text-decoration:none;color:inherit;">Sofa Wabi 2 Chỗ</a></div>
           <div class="product-desc">Linen Bỉ · Khung óc chó · Đệm cao su thiên nhiên</div>
           <div class="product-footer">
             <div class="product-price">38.500.000₫</div>
@@ -1223,6 +1271,7 @@
 
       <!-- Product 2 -->
       <div class="product-card">
+        <a href="/product/ban-tra-kuro" style="text-decoration:none; color:inherit; display:block;">
         <div class="product-img-wrap">
           <div class="product-img-placeholder" style="background:linear-gradient(135deg,#D8D0C0,#C4BAA8);">
             <svg viewBox="0 0 240 320" width="80%" xmlns="http://www.w3.org/2000/svg">
@@ -1252,8 +1301,9 @@
             </button>
           </div>
         </div>
+        </a>
         <div class="product-info">
-          <div class="product-name">Bàn Trà Kuro Tròn</div>
+          <div class="product-name"><a href="/product/ban-tra-kuro" style="text-decoration:none;color:inherit;">Bàn Trà Kuro Tròn</a></div>
           <div class="product-desc">Gỗ óc chó đặc · Mặt bàn Ø90cm · Chân chéo</div>
           <div class="product-footer">
             <div class="product-price">
@@ -1314,7 +1364,7 @@
           </div>
         </div>
         <div class="product-info">
-          <div class="product-name">Kệ Sách Shizen 5 Tầng</div>
+          <div class="product-name"><a href="/product/ke-sach-shizen" style="text-decoration:none;color:inherit;">Kệ Sách Shizen 5 Tầng</a></div>
           <div class="product-desc">Gỗ tần bì · H180cm · Có thể tùy chỉnh ngăn</div>
           <div class="product-footer">
             <div class="product-price">12.800.000₫</div>
@@ -1362,7 +1412,7 @@
           </div>
         </div>
         <div class="product-info">
-          <div class="product-name">Đèn Sàn Iro</div>
+          <div class="product-name"><a href="/product/den-san-iro" style="text-decoration:none;color:inherit;">Đèn Sàn Iro</a></div>
           <div class="product-desc">Chao vải linen · Chân đồng mờ · H165cm</div>
           <div class="product-footer">
             <div class="product-price">4.500.000₫</div>
@@ -1653,7 +1703,7 @@
           </div>
         </div>
 
-        <a href="#" class="btn-outline" style="margin-top:40px;">Tìm hiểu thêm về chúng tôi</a>
+        <a href="/about" class="btn-outline" style="margin-top:40px;">Tìm hiểu thêm về chúng tôi</a>
       </div>
     </div>
   </div>
@@ -2009,36 +2059,36 @@
       <div>
         <div class="footer-col-title">Sản phẩm</div>
         <ul class="footer-links">
-          <li><a href="#">Phòng Khách</a></li>
-          <li><a href="#">Phòng Ngủ</a></li>
-          <li><a href="#">Phòng Ăn</a></li>
-          <li><a href="#">Không gian làm việc</a></li>
-          <li><a href="#">Phụ kiện & Đèn</a></li>
-          <li><a href="#">Sale</a></li>
+          <li><a href="/products/phong-khach">Phòng Khách</a></li>
+          <li><a href="/products/phong-ngu">Phòng Ngủ</a></li>
+          <li><a href="/products/phong-an">Phòng Ăn</a></li>
+          <li><a href="/products/van-phong">Không gian làm việc</a></li>
+          <li><a href="/products/phu-kien">Phụ kiện & Đèn</a></li>
+          <li><a href="/sale">Sale</a></li>
         </ul>
       </div>
 
       <div>
         <div class="footer-col-title">Dịch vụ</div>
         <ul class="footer-links">
-          <li><a href="#">Tư vấn thiết kế miễn phí</a></li>
-          <li><a href="#">Đặt hàng theo yêu cầu</a></li>
-          <li><a href="#">Giao hàng & Lắp đặt</a></li>
-          <li><a href="#">Chính sách bảo hành</a></li>
-          <li><a href="#">Đổi trả</a></li>
-          <li><a href="#">Showroom</a></li>
+          <li><a href="/service/tu-van-thiet-ke-mien-phi">Tư vấn thiết kế miễn phí</a></li>
+          <li><a href="/service/dat-hang-theo-yeu-cau">Đặt hàng theo yêu cầu</a></li>
+          <li><a href="/service/giao-hang-lap-dat">Giao hàng & Lắp đặt</a></li>
+          <li><a href="/service/chinh-sach-bao-hanh">Chính sách bảo hành</a></li>
+          <li><a href="/service/doi-tra">Đổi trả</a></li>
+          <li><a href="/service/showroom">Showroom</a></li>
         </ul>
       </div>
 
       <div>
         <div class="footer-col-title">Thương hiệu</div>
         <ul class="footer-links">
-          <li><a href="#">Câu chuyện của chúng tôi</a></li>
-          <li><a href="#">Xưởng sản xuất</a></li>
-          <li><a href="#">Cam kết bền vững</a></li>
-          <li><a href="#">Nhật ký thiết kế</a></li>
-          <li><a href="#">Tuyển dụng</a></li>
-          <li><a href="#">Liên hệ</a></li>
+          <li><a href="/brand/cau-chuyen-cua-chung-toi">Câu chuyện của chúng tôi</a></li>
+          <li><a href="/brand/xuong-san-xuat">Xưởng sản xuất</a></li>
+          <li><a href="/brand/cam-ket-ben-vung">Cam kết bền vững</a></li>
+          <li><a href="/brand/nhat-ky-thiet-ke">Nhật ký thiết kế</a></li>
+          <li><a href="/brand/tuyen-dung">Tuyển dụng</a></li>
+          <li><a href="/brand/lien-he">Liên hệ</a></li>
         </ul>
       </div>
     </div>

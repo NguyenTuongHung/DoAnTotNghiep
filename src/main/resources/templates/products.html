@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="'Danh mục ' + ${categorySlug}">Sản phẩm</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: linear-gradient(135deg,#f7f2ea,#efe3d2); color: #3a2a1a; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 40px 24px 60px; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 16px; flex-wrap: wrap; }
+    .badge { display: inline-block; padding: 6px 10px; background: rgba(184,147,90,0.16); color: #b8935a; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 8px; }
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+    .filters { display: flex; gap: 10px; flex-wrap: wrap; }
+    .filters a { text-decoration: none; color: #3a2a1a; background: white; padding: 8px 12px; border-radius: 999px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .card { background: white; border-radius: 16px; padding: 18px; box-shadow: 0 12px 28px rgba(0,0,0,0.08); }
+    .photo { height: 180px; border-radius: 12px; background: linear-gradient(135deg,#e8d8c2,#c6ae8b); display: flex; align-items: center; justify-content: center; font-size: 42px; margin-bottom: 12px; }
+    .card h3 { margin: 6px 0 8px; font-size: 20px; }
+    .card p { color: #7a6a56; line-height: 1.5; margin: 6px 0; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+    .meta span { font-size: 11px; padding: 6px 8px; background: #f7efe5; border-radius: 999px; }
+    .price { font-weight: 700; font-size: 18px; color: #3a2a1a; margin: 10px 0 12px; }
+    .btn { display: inline-block; padding: 10px 14px; background: #b8935a; color: white; text-decoration: none; border-radius: 8px; }
+    .btn:hover { background: #9f7743; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.16em; color:#b8935a; margin-bottom:6px;">Danh mục</div>
+        <h1 style="margin:0 0 8px; font-size:34px;" th:text="${categoryName}">Danh mục sản phẩm</h1>
+        <div style="color:#7a6a56; max-width:620px; line-height:1.6;" th:text="${categoryDescription}">Khám phá các sản phẩm phù hợp với không gian của bạn.</div>
+        <div style="margin-top:10px; display:inline-block; padding:6px 12px; background:rgba(184,147,90,0.16); color:#b8935a; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase;" th:text="${productCount} + ' sản phẩm'">0 sản phẩm</div>
+      </div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <a href="/" style="color:#3a2a1a; text-decoration:none;">← Quay lại trang chủ</a>
+        <a href="/cart" style="color:#b8935a; text-decoration:none;">🛒 Xem giỏ hàng</a>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="filters">
+        <a href="/products/phong-khach">Phòng khách</a>
+        <a href="/products/phong-an">Phòng ăn</a>
+        <a href="/products/phong-ngu">Phòng ngủ</a>
+        <a href="/products/phu-kien">Phụ kiện</a>
+        <a href="/products/van-phong">Văn phòng</a>
+      </div>
+      <form th:action="@{'/products/' + ${categorySlug}}" method="get" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <input type="text" id="searchInput" name="q" th:value="${searchQuery}" placeholder="Tìm kiếm sản phẩm..." list="suggestions" style="border:1px solid #e2d3b8; border-radius:999px; padding:10px 14px; min-width:220px;" />
+        <datalist id="suggestions"></datalist>
+        <select name="kind" style="border:1px solid #e2d3b8; border-radius:999px; padding:10px 12px;">
+          <option value="" th:selected="${selectedKind == ''}">Loại sản phẩm</option>
+          <option value="sofa" th:selected="${selectedKind == 'sofa'}">Sofa</option>
+          <option value="bàn" th:selected="${selectedKind == 'bàn'}">Bàn</option>
+          <option value="ghế" th:selected="${selectedKind == 'ghế'}">Ghế</option>
+          <option value="đèn" th:selected="${selectedKind == 'đèn'}">Đèn</option>
+          <option value="tủ" th:selected="${selectedKind == 'tủ'}">Tủ</option>
+          <option value="kệ" th:selected="${selectedKind == 'kệ'}">Kệ</option>
+          <option value="thảm" th:selected="${selectedKind == 'thảm'}">Thảm</option>
+          <option value="gương" th:selected="${selectedKind == 'gương'}">Gương</option>
+        </select>
+        <select name="material" style="border:1px solid #e2d3b8; border-radius:999px; padding:10px 12px;">
+          <option value="" th:selected="${selectedMaterial == ''}">Chất liệu</option>
+          <option value="gỗ" th:selected="${selectedMaterial == 'gỗ'}">Gỗ</option>
+          <option value="vải" th:selected="${selectedMaterial == 'vải'}">Vải</option>
+          <option value="kim loại" th:selected="${selectedMaterial == 'kim loại'}">Kim loại</option>
+          <option value="thủy tinh" th:selected="${selectedMaterial == 'thủy tinh'}">Thủy tinh</option>
+          <option value="tre" th:selected="${selectedMaterial == 'tre'}">Tre</option>
+        </select>
+        <input type="number" name="minPrice" th:value="${minPrice}" placeholder="Giá tối thiểu" style="border:1px solid #e2d3b8; border-radius:999px; padding:10px 12px; width:132px;" />
+        <input type="number" name="maxPrice" th:value="${maxPrice}" placeholder="Giá tối đa" style="border:1px solid #e2d3b8; border-radius:999px; padding:10px 12px; width:132px;" />
+        <button type="submit" style="border:none; background:#b8935a; color:white; border-radius:999px; padding:10px 16px; cursor:pointer;">Tìm kiếm</button>
+      </form>
+    </div>
+
+    <div th:if="${searchQuery != null and !#strings.isEmpty(searchQuery)}" style="margin-bottom:16px; color:#7a6a56;">
+      Kết quả cho từ khóa: <strong th:text="${searchQuery}">tìm kiếm</strong>
+    </div>
+
+    <div class="grid">
+      <div class="card" th:each="product : ${products}">
+        <div class="photo" th:text="${product.name.substring(0,1)}">S</div>
+        <div class="badge" th:text="${product.category}">Danh mục</div>
+        <h3 th:text="${product.name}">Tên sản phẩm</h3>
+        <p th:text="${product.description}">Mô tả</p>
+        <div class="meta">
+          <span th:text="${product.material}">Chất liệu</span>
+          <span th:text="${product.feature1}">Đặc điểm</span>
+        </div>
+        <div class="price" th:text="${product.price}">Giá</div>
+        <a class="btn" th:href="@{'/product/' + ${product.slug}}">Xem chi tiết</a>
+      </div>
+    </div>
+  </div>
+  <script th:inline="javascript">
+    const input = document.getElementById('searchInput');
+    const datalist = document.getElementById('suggestions');
+    const categorySlug = /*[[${categorySlug}]]*/ '';
+
+    input.addEventListener('input', async () => {
+      const query = input.value.trim();
+      if (!query) {
+        datalist.innerHTML = '';
+        return;
+      }
+      const response = await fetch(`/products/${categorySlug}/suggest?q=${encodeURIComponent(query)}`);
+      const suggestions = await response.json();
+      datalist.innerHTML = suggestions.map(item => `<option value="${item}"></option>`).join('');
+    });
+  </script>
+</body>
+</html>

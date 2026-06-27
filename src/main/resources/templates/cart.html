@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Giỏ hàng</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f7f2ea; color: #3a2a1a; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px 60px; }
+    .card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 12px 28px rgba(0,0,0,0.08); }
+    .item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 14px 0; }
+    .btn { display: inline-block; margin-top: 16px; padding: 10px 14px; background: #b8935a; color: white; text-decoration: none; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <a href="/" style="color:#b8935a; text-decoration:none;">← Quay lại cửa hàng</a>
+      <h1>Giỏ hàng của bạn</h1>
+      <div th:if="${#lists.isEmpty(cartItems)}">
+        <p>Giỏ hàng đang trống.</p>
+      </div>
+      <div th:unless="${#lists.isEmpty(cartItems)}">
+        <div class="item" th:each="item : ${cartItems}">
+          <div>
+            <strong th:text="${item.name}">Tên</strong>
+            <div th:text="${item.description}"></div>
+          </div>
+          <div th:text="${item.price}"></div>
+        </div>
+      </div>
+      <a class="btn" href="/">Tiếp tục mua</a>
+    </div>
+  </div>
+</body>
+</html>

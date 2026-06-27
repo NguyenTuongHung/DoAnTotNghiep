@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${product.name}">Chi tiết sản phẩm</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: linear-gradient(135deg,#f7f2ea,#efe3d2); color: #3a2a1a; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 40px 24px 60px; }
+    .card { background: white; border-radius: 20px; padding: 24px; box-shadow: 0 14px 32px rgba(0,0,0,0.08); }
+    .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 24px; align-items: center; }
+    .photo { height: 320px; border-radius: 16px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #f5f0e8; }
+    .photo img { width: 100%; height: 100%; object-fit: cover; }
+    .price { font-size: 24px; color: #b8935a; font-weight: bold; margin: 12px 0; }
+    .specs { display: grid; gap: 8px; margin: 16px 0; }
+    .specs div { padding: 8px 10px; background: #f7efe5; border-radius: 8px; }
+    .btn { display: inline-block; margin-top: 16px; padding: 12px 16px; background: #3a2a1a; color: white; text-decoration: none; border-radius: 8px; }
+    .btn.secondary { background: #b8935a; margin-left: 10px; }
+    .ar-modal {
+      position: fixed; inset: 0; background: rgba(10, 8, 5, 0.65); display: none;
+      align-items: center; justify-content: center; z-index: 20;
+      padding: 24px;
+    }
+    .ar-modal.open { display: flex; }
+    .ar-panel {
+      width: min(920px, 100%); background: #fffaf3; border-radius: 24px;
+      box-shadow: 0 24px 56px rgba(0,0,0,0.18); overflow: hidden;
+    }
+    .ar-header {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 16px; padding: 24px 28px 0;
+    }
+    .ar-room {
+      position: relative; background: radial-gradient(circle at 50% 15%, #f7efe5 0%, #e3d8c9 38%, #d4c2a8 100%);
+      height: 380px; margin: 24px 28px 0;
+      border-radius: 18px; overflow: hidden; display: flex; align-items: center; justify-content: center;
+      box-shadow: inset 0 20px 80px rgba(0,0,0,0.08);
+      perspective: 1200px;
+    }
+    .ar-room::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, transparent 30%),
+                  linear-gradient(0deg, transparent 60%, rgba(58,42,26,0.08) 100%);
+      pointer-events: none;
+    }
+    .ar-room::after {
+      content: '';
+      position: absolute; left: 0; right: 0; bottom: 0; height: 110px;
+      background: linear-gradient(180deg, transparent 0%, rgba(58,42,26,0.14) 100%);
+    }
+    .ar-chair {
+      width: 140px; height: 140px; background: #000;
+      border-radius: 22px; display: grid; place-items: center;
+      cursor: grab; position: absolute; top: 30%; left: 12%; user-select: none;
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
+      box-shadow: 0 18px 30px rgba(0,0,0,0.22);
+      overflow: hidden;
+    }
+    .ar-chair img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+    }
+    .ar-chair.dragging { opacity: 0.92; transform: scale(1.06); }
+    .ar-spot {
+      position: absolute; width: 180px; height: 110px;
+      border: 2px dashed rgba(184,147,90,0.6);
+      background: rgba(184,147,90,0.08);
+      border-radius: 22px; display: grid; place-items: center;
+      color: #3a2a1a; font-size: 13px; text-align: center;
+      pointer-events: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      transform: translateZ(0);
+    }
+    .ar-spot.near {
+      border-color: #7a9282;
+      background: rgba(122,146,130,0.12);
+      box-shadow: 0 0 0 8px rgba(122,146,130,0.08);
+      transform: translateZ(0) scale(1.02);
+    }
+    .ar-info {
+      padding: 24px 28px 28px;
+      background: #f7efe5;
+      border-top: 1px solid rgba(58,42,26,0.08);
+    }
+    .ar-details { display: grid; gap: 10px; margin-top: 12px; }
+    .ar-details div { font-size: 14px; color: #3a2a1a; }
+    .ar-status {
+      margin-top: 16px; padding: 14px 16px; border-radius: 14px;
+      background: rgba(58,42,26,0.06); color: #3a2a1a; font-weight: 600;
+    }
+    .ar-status.near { background: rgba(122,146,130,0.14); color: #2f4f3d; }
+    .ar-info {
+      padding: 24px 28px 28px;
+      background: #f7efe5;
+      border-top: 1px solid rgba(58,42,26,0.08);
+    }
+    .ar-details { display: grid; gap: 10px; margin-top: 12px; }
+    .ar-details div { font-size: 14px; color: #3a2a1a; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
+        <a th:href="${backUrl}" href="/" style="color:#b8935a; text-decoration:none;">← Quay lại</a>
+        <a href="/" style="color:#3a2a1a; text-decoration:none;">Trang chủ</a>
+      </div>
+      <div class="hero">
+        <div class="photo">
+          <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=900&q=80" alt="Ghế nội thất cao cấp" />
+        </div>
+        <div>
+          <h1 th:text="${product.name}">Tên sản phẩm</h1>
+          <p th:text="${product.description}">Mô tả</p>
+          <div class="price" th:text="${product.price}">Giá</div>
+          <p><strong>Danh mục:</strong> <span th:text="${product.category}"></span></p>
+          <div class="specs">
+            <div><strong>Chất liệu:</strong> <span th:text="${product.material}"></span></div>
+            <div><strong>Đặc điểm:</strong> <span th:text="${product.feature1}"></span></div>
+            <div><strong>Đặc điểm:</strong> <span th:text="${product.feature2}"></span></div>
+            <div><strong>Đặc điểm:</strong> <span th:text="${product.feature3}"></span></div>
+          </div>
+          <form method="post" action="/cart/add" style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:16px;">
+            <input type="hidden" name="slug" th:value="${product.slug}" />
+            <label style="font-weight:600;">Số lượng</label>
+            <select name="quantity" style="padding:10px 12px; border-radius:8px; border:1px solid #e2d3b8;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <button class="btn" type="submit">Thêm vào giỏ hàng</button>
+            <button class="btn secondary" type="submit" name="checkout" value="true">Đặt ngay</button>
+            <a class="btn secondary" href="/">Tiếp tục mua sắm</a>
+          </form>
+          <button class="btn secondary" id="openAr" style="margin-top:16px;">Thử đặt ghế trong phòng 3D</button>
+        </div>
+      </div>
+    </div>
+    <div class="ar-modal" id="arModal">
+      <div class="ar-panel">
+        <div class="ar-header">
+          <div>
+            <div style="font-size:12px; color:#b8935a; text-transform:uppercase; letter-spacing:0.16em;">Thử đặt ghế 3D</div>
+            <h2 style="margin:8px 0 0;">Kéo ghế vào vị trí trong phòng</h2>
+          </div>
+          <button class="btn secondary" id="closeAr" style="padding:10px 12px;">Đóng</button>
+        </div>
+        <div class="ar-room" id="arRoom">
+          <div class="ar-chair" id="arChair" draggable="true">
+            <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=400&q=80" alt="Ghế Lounge Yuki" />
+          </div>
+          <div class="ar-spot" id="arSpot" title="Khu vực đề xuất đặt ghế">Khu vực gợi ý</div>
+        </div>
+        <div class="ar-info">
+          <p>Đây là bản thử nghiệm mô phỏng không gian 3D trực quan. Kéo ghế vào vùng gợi ý để xem trạng thái “gần đúng vị trí”.</p>
+          <div class="ar-status" id="arStatus">Kéo ghế vào vùng gợi ý để bắt đầu.</div>
+          <div class="ar-details">
+            <div><strong>Chất liệu:</strong> <span th:text="${product.material}">Gỗ</span></div>
+            <div><strong>Màu sắc:</strong> <span th:text="${product.feature3}">Màu sắc</span></div>
+            <div><strong>Kích thước:</strong> 90 x 85 x 100 cm</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:24px; background:#fffaf3; padding:18px; border-radius:14px;">
+      <h3>Đánh giá khách hàng</h3>
+      <p>“Sản phẩm đẹp, chất lượng tốt, thiết kế phù hợp với không gian hiện đại.” — Minh Anh</p>
+      <p>“Màu sắc và chất liệu rất ấn tượng, giao hàng đúng hẹn.” — Quang Huy</p>
+    </div>
+  </div>
+  <script>
+    const openArButton = document.getElementById('openAr');
+    const closeArButton = document.getElementById('closeAr');
+    const arModal = document.getElementById('arModal');
+    const arChair = document.getElementById('arChair');
+    const arRoom = document.getElementById('arRoom');
+    const arSpot = document.getElementById('arSpot');
+    const arStatus = document.getElementById('arStatus');
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playPing() {
+      const oscillator = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(660, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      oscillator.connect(gain).connect(audioCtx.destination);
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + 0.12);
+    }
+
+    openArButton.addEventListener('click', () => {
+      arModal.classList.add('open');
+      arStatus.textContent = 'Kéo ghế vào vùng gợi ý để kiểm tra vị trí đặt.';
+    });
+    closeArButton.addEventListener('click', () => {
+      arModal.classList.remove('open');
+      arSpot.classList.remove('near');
+      arStatus.classList.remove('near');
+    });
+
+    let offsetX = 0;
+    let offsetY = 0;
+    let isDragging = false;
+
+    function updateDistanceFeedback(left, top) {
+      const spotRect = arSpot.getBoundingClientRect();
+      const chairRect = arChair.getBoundingClientRect();
+      const chairCenterX = left + chairRect.width / 2;
+      const chairCenterY = top + chairRect.height / 2;
+      const spotCenterX = spotRect.left + spotRect.width / 2 - arRoom.getBoundingClientRect().left;
+      const spotCenterY = spotRect.top + spotRect.height / 2 - arRoom.getBoundingClientRect().top;
+      const dx = chairCenterX - spotCenterX;
+      const dy = chairCenterY - spotCenterY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance < 70) {
+        arSpot.classList.add('near');
+        arStatus.classList.add('near');
+        arStatus.textContent = 'Gần đúng vị trí! Nhả chuột để cố định ghế.';
+        playPing();
+      } else {
+        arSpot.classList.remove('near');
+        arStatus.classList.remove('near');
+        arStatus.textContent = distance < 200 ? 'Bạn đã gần tới vùng gợi ý. Tiếp tục điều chỉnh.' : 'Di chuyển ghế đến vùng gợi ý để thử đặt vị trí.';
+      }
+    }
+
+    arChair.addEventListener('mousedown', (event) => {
+      isDragging = true;
+      arChair.classList.add('dragging');
+      offsetX = event.clientX - arChair.getBoundingClientRect().left;
+      offsetY = event.clientY - arChair.getBoundingClientRect().top;
+    });
+    document.addEventListener('mousemove', (event) => {
+      if (!isDragging) return;
+      const roomRect = arRoom.getBoundingClientRect();
+      let left = event.clientX - roomRect.left - offsetX;
+      let top = event.clientY - roomRect.top - offsetY;
+      left = Math.max(12, Math.min(left, roomRect.width - arChair.offsetWidth - 12));
+      top = Math.max(12, Math.min(top, roomRect.height - arChair.offsetHeight - 12));
+      arChair.style.left = left + 'px';
+      arChair.style.top = top + 'px';
+      updateDistanceFeedback(left, top);
+    });
+    document.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      arChair.classList.remove('dragging');
+      const left = parseFloat(arChair.style.left || 0);
+      const top = parseFloat(arChair.style.top || 0);
+      updateDistanceFeedback(left, top);
+    });
+  </script>
+</body>
+</html>
