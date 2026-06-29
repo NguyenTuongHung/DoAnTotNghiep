@@ -1,20 +1,555 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{info-page :: layout('Sale đặc biệt', 'Khám phá những ưu đãi, sản phẩm giảm giá và gợi ý phong cách nội thất với mức giá hấp dẫn.', ~{::main})}">
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{info-page :: layout(
+      'Sale đặc biệt',
+      'Khám phá những ưu đãi hấp dẫn cùng hàng trăm mẫu nội thất chất lượng với mức giá tốt nhất.',
+      ~{::main})}">
+
 <body>
+
 <main>
-  <section class="section">
-    <h2>Ưu đãi chọn lọc</h2>
-    <p>Các sản phẩm sale được tuyển chọn cẩn thận để vẫn giữ được chất lượng và thiết kế đặc trưng Mộc & Vàng.</p>
-  </section>
-  <section class="section">
-    <h2>Giảm giá lên đến 20%</h2>
-    <ul>
-      <li>Sofa, ghế và bàn trà cho phòng khách</li>
-      <li>Bộ bàn ăn thanh lịch dành cho gia đình</li>
-      <li>Phụ kiện và decor hoàn thiện không gian</li>
-    </ul>
-  </section>
+
+<style>
+
+.hero-sale{
+    text-align:center;
+    padding:20px 10px 40px;
+}
+
+.hero-sale h2{
+    font-size:42px;
+    margin-bottom:18px;
+}
+
+.hero-sale p{
+    max-width:850px;
+    margin:auto;
+    line-height:1.9;
+}
+
+.sale-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:24px;
+    margin-top:35px;
+}
+
+.sale-card{
+    background:#fff;
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 10px 28px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.sale-card:hover{
+    transform:translateY(-8px);
+}
+
+.sale-card h3{
+    margin-bottom:12px;
+    color:#3a2a1a;
+}
+
+.sale-card p{
+    margin:0;
+}
+
+.two-column{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:45px;
+    align-items:center;
+}
+
+.video iframe{
+    width:100%;
+    height:380px;
+    border:none;
+    border-radius:18px;
+    box-shadow:0 10px 28px rgba(0,0,0,.12);
+}
+
+.video-content ul{
+    padding-left:20px;
+    line-height:2;
+}
+
+@media(max-width:900px){
+
+.two-column{
+grid-template-columns:1fr;
+}
+
+.hero-sale h2{
+font-size:32px;
+}
+
+.video iframe{
+height:260px;
+}
+
+}
+
+</style>
+
+<!-- HERO -->
+
+<section class="hero-sale">
+
+    <h2>🎉 SALE ĐẶC BIỆT</h2>
+
+    <p>
+
+        Chương trình ưu đãi dành riêng cho những khách hàng đang tìm kiếm
+        nội thất chất lượng với mức giá tốt nhất.
+        Từ sofa, bàn ăn, tủ trang trí đến các phụ kiện decor,
+        tất cả đều được tuyển chọn kỹ lưỡng nhằm mang đến cho bạn
+        không gian sống hiện đại và tiện nghi.
+
+    </p>
+
+</section>
+
+<!-- ƯU ĐÃI -->
+
+<section class="section">
+
+    <h2>Ưu đãi nổi bật</h2>
+
+    <div class="sale-grid">
+
+        <div class="sale-card">
+
+            <h3>🛋 Sofa phòng khách</h3>
+
+            <p>
+
+                Giảm giá lên đến <strong>20%</strong> cho nhiều mẫu sofa
+                hiện đại và sang trọng.
+
+            </p>
+
+        </div>
+
+        <div class="sale-card">
+
+            <h3>🍽 Bộ bàn ăn</h3>
+
+            <p>
+
+                Thiết kế tinh tế, phù hợp với mọi không gian gia đình.
+
+            </p>
+
+        </div>
+
+        <div class="sale-card">
+
+            <h3>🛏 Nội thất phòng ngủ</h3>
+
+            <p>
+
+                Tiết kiệm hơn khi mua giường,
+                tủ quần áo và tab đầu giường.
+
+            </p>
+
+        </div>
+
+        <div class="sale-card">
+
+            <h3>💡 Decor</h3>
+
+            <p>
+
+                Đèn trang trí, tranh treo tường,
+                thảm và nhiều phụ kiện khác.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- GIỚI THIỆU -->
+
+<section class="section">
+
+    <h2>Tại sao nên mua trong đợt Sale?</h2>
+
+    <p>
+
+        Không chỉ giảm giá, tất cả sản phẩm đều được bảo hành đầy đủ,
+        kiểm tra chất lượng trước khi giao đến khách hàng.
+        Chúng tôi luôn mong muốn mang đến những sản phẩm có giá trị sử dụng lâu dài,
+        đáp ứng cả về thẩm mỹ lẫn độ bền.
+
+    </p>
+
+    <p>
+
+        Đây cũng là thời điểm thích hợp để làm mới không gian sống,
+        tiết kiệm chi phí nhưng vẫn sở hữu những thiết kế hiện đại.
+
+    </p>
+
+</section>
+
+<!-- VIDEO -->
+
+<section class="section">
+
+    <div class="two-column">
+
+        <div class="video">
+
+            <iframe
+                    src="https://www.youtube.com/embed/aqz-KE-bpKQ"
+                    title="Sale Collection"
+                    allowfullscreen>
+            </iframe>
+
+        </div>
+
+        <div class="video-content">
+
+            <h2>Khám phá bộ sưu tập mới</h2>
+
+            <p>
+
+                Bộ sưu tập năm nay được lấy cảm hứng từ phong cách
+                Scandinavian kết hợp với nét hiện đại,
+                mang đến không gian sống tối giản nhưng đầy tinh tế.
+
+            </p>
+
+            <ul>
+
+                <li>✔ Gỗ tự nhiên cao cấp.</li>
+
+                <li>✔ Thiết kế sang trọng.</li>
+
+                <li>✔ Bảo hành chính hãng.</li>
+
+                <li>✔ Giao hàng toàn quốc.</li>
+
+                <li>✔ Nhiều chương trình ưu đãi.</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:20px;
+    margin-top:25px;
+}
+
+.stat{
+    background:#fff;
+    border-radius:18px;
+    padding:28px;
+    text-align:center;
+    box-shadow:0 10px 28px rgba(0,0,0,.08);
+}
+
+.stat h3{
+    font-size:34px;
+    margin-bottom:10px;
+    color:#b8935a;
+}
+
+.review-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:24px;
+    margin-top:25px;
+}
+
+.review-card{
+    background:#fff;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 10px 28px rgba(0,0,0,.08);
+}
+
+.review-card h4{
+    margin-bottom:15px;
+}
+
+.faq details{
+    background:#fff;
+    padding:18px 22px;
+    margin-bottom:15px;
+    border-radius:14px;
+    box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+
+.faq summary{
+    cursor:pointer;
+    font-weight:600;
+}
+
+.cta{
+    text-align:center;
+    padding:55px 25px;
+}
+
+.cta h2{
+    margin-bottom:18px;
+}
+
+.cta p{
+    max-width:760px;
+    margin:auto;
+    line-height:1.8;
+}
+
+.cta a{
+    display:inline-block;
+    margin-top:25px;
+    background:#3a2a1a;
+    color:white;
+    text-decoration:none;
+    padding:15px 36px;
+    border-radius:14px;
+    transition:.3s;
+}
+
+.cta a:hover{
+    background:#2a1c10;
+}
+
+</style>
+
+<!-- THỐNG KÊ -->
+
+<section class="section">
+
+    <h2>Được khách hàng tin tưởng</h2>
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <h3>10.000+</h3>
+
+            <p>Khách hàng đã mua sắm</p>
+
+        </div>
+
+        <div class="stat">
+
+            <h3>500+</h3>
+
+            <p>Sản phẩm nội thất</p>
+
+        </div>
+
+        <div class="stat">
+
+            <h3>24</h3>
+
+            <p>Tháng bảo hành</p>
+
+        </div>
+
+        <div class="stat">
+
+            <h3>4.9★</h3>
+
+            <p>Đánh giá trung bình</p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- GỢI Ý -->
+
+<section class="section">
+
+    <h2>Gợi ý phối nội thất</h2>
+
+    <p>
+
+        Để không gian trở nên hài hòa, bạn có thể kết hợp sofa màu trung tính
+        cùng bàn trà gỗ tự nhiên và một chiếc thảm sáng màu.
+        Với phòng ngủ, hãy lựa chọn tủ gỗ kết hợp hệ thống đèn ánh vàng để tạo
+        cảm giác ấm cúng và thư giãn.
+
+    </p>
+
+    <div class="callout">
+
+        <strong>Mẹo nhỏ</strong>
+
+        Hãy ưu tiên những gam màu trung tính để không gian luôn hiện đại,
+        dễ phối với các phụ kiện trang trí sau này.
+
+    </div>
+
+</section>
+
+<!-- REVIEW -->
+
+<section class="section">
+
+    <h2>Khách hàng nói gì?</h2>
+
+    <div class="review-grid">
+
+        <div class="review-card">
+
+            <h4>⭐⭐⭐⭐⭐</h4>
+
+            <p>
+
+                "Chất lượng sản phẩm vượt mong đợi.
+                Sofa rất đẹp và chắc chắn."
+
+            </p>
+
+            <strong>Nguyễn Minh Anh</strong>
+
+        </div>
+
+        <div class="review-card">
+
+            <h4>⭐⭐⭐⭐⭐</h4>
+
+            <p>
+
+                "Giá Sale cực kỳ hấp dẫn.
+                Nhân viên tư vấn rất nhiệt tình."
+
+            </p>
+
+            <strong>Trần Quốc Huy</strong>
+
+        </div>
+
+        <div class="review-card">
+
+            <h4>⭐⭐⭐⭐⭐</h4>
+
+            <p>
+
+                "Giao hàng đúng hẹn,
+                đóng gói cẩn thận và sản phẩm đẹp."
+
+            </p>
+
+            <strong>Lê Hoàng Nam</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- FAQ -->
+
+<section class="section faq">
+
+    <h2>Câu hỏi thường gặp</h2>
+
+    <details>
+
+        <summary>Sản phẩm Sale có được bảo hành không?</summary>
+
+        <p>
+
+            Có. Mọi sản phẩm đều được bảo hành theo chính sách của Mộc & Vàng.
+
+        </p>
+
+    </details>
+
+    <details>
+
+        <summary>Có hỗ trợ giao hàng toàn quốc không?</summary>
+
+        <p>
+
+            Chúng tôi hỗ trợ giao hàng trên toàn quốc với nhiều hình thức vận chuyển.
+
+        </p>
+
+    </details>
+
+    <details>
+
+        <summary>Có được đổi trả không?</summary>
+
+        <p>
+
+            Chính sách đổi trả áp dụng theo quy định hiện hành của cửa hàng.
+
+        </p>
+
+    </details>
+
+</section>
+
+<!-- CTA -->
+
+<section class="section cta">
+
+    <h2>Đừng bỏ lỡ chương trình Sale!</h2>
+
+    <p>
+
+        Hàng trăm sản phẩm đang được ưu đãi với số lượng có hạn.
+        Đây là thời điểm thích hợp để nâng cấp không gian sống với mức chi phí tiết kiệm nhất.
+
+    </p>
+
+    <div class="button-group">
+
+    <a th:href="@{/products/phong-khach}" class="btn">
+        Phòng khách
+    </a>
+
+    <a th:href="@{/products/phong-an}" class="btn">
+        Phòng ăn
+    </a>
+
+    <a th:href="@{/products/phong-ngu}" class="btn">
+        Phòng ngủ
+    </a>
+
+    <a th:href="@{/products/phu-kien}" class="btn">
+        Phụ kiện
+    </a>
+
+    <a th:href="@{/products/van-phong}" class="btn">
+        Văn phòng
+    </a>
+
+    <a th:href="@{/products/khong-gian-ca-nhan}" class="btn">
+        Không gian cá nhân
+    </a>
+
+</div>
+
+</section>
+
 </main>
+
 </body>
+
 </html>
+

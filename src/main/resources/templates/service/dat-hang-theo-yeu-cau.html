@@ -1,20 +1,680 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{info-page :: layout('Đặt hàng theo yêu cầu', 'Chúng tôi hỗ trợ đặt làm nội thất theo kích thước, chất liệu và màu sắc riêng của bạn.', ~{::main})}">
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{info-page :: layout(
+      'Đặt hàng theo yêu cầu',
+      'Chúng tôi hỗ trợ đặt làm nội thất theo kích thước, chất liệu và màu sắc riêng của bạn.',
+      ~{::main})}">
+
 <body>
+
 <main>
-  <section class="section">
-    <h2>Chọn chất liệu thỏa thích</h2>
-    <p>Lựa chọn gỗ, vải và kim loại phù hợp với phong cách sống và môi trường sử dụng.</p>
-  </section>
-  <section class="section">
-    <h2>Thiết kế chuẩn theo kích thước</h2>
-    <p>Mọi sản phẩm có thể được điều chỉnh theo kích thước riêng để phù hợp chính xác với không gian của bạn.</p>
-  </section>
-  <section class="section">
-    <h2>Hoàn thiện với phong cách riêng</h2>
-    <p>Nhu cầu cá nhân được thể hiện trong từng chi tiết, từ tay vịn đến đường chỉ may.</p>
-  </section>
+
+<style>
+
+.hero-custom{
+    text-align:center;
+    padding:20px 10px 40px;
+}
+
+.hero-custom h2{
+    font-size:42px;
+    margin-bottom:18px;
+}
+
+.hero-custom p{
+    max-width:850px;
+    margin:auto;
+    line-height:1.9;
+}
+
+.custom-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:24px;
+    margin-top:35px;
+}
+
+.custom-card{
+    background:#fff;
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 10px 28px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.custom-card:hover{
+    transform:translateY(-8px);
+}
+
+.custom-card h3{
+    margin-bottom:15px;
+    color:#3a2a1a;
+}
+
+.two-column{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:45px;
+    align-items:center;
+}
+
+.video iframe{
+    width:100%;
+    height:380px;
+    border:none;
+    border-radius:18px;
+    box-shadow:0 10px 28px rgba(0,0,0,.12);
+}
+
+.video-content ul{
+    padding-left:20px;
+    line-height:2;
+}
+
+.process{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:25px;
+    margin-top:30px;
+}
+
+.process-step{
+    background:#fff;
+    border-radius:18px;
+    padding:28px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.process-step span{
+    display:inline-flex;
+    width:55px;
+    height:55px;
+    justify-content:center;
+    align-items:center;
+    border-radius:50%;
+    background:#b8935a;
+    color:white;
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+@media(max-width:900px){
+
+.two-column{
+grid-template-columns:1fr;
+}
+
+.hero-custom h2{
+font-size:32px;
+}
+
+.video iframe{
+height:250px;
+}
+
+}
+
+</style>
+
+<!-- HERO -->
+
+<section class="hero-custom">
+
+<h2>🪵 ĐẶT HÀNG THEO YÊU CẦU</h2>
+
+<p>
+
+Mỗi không gian đều có những đặc điểm riêng.
+Chúng tôi mang đến dịch vụ sản xuất nội thất theo yêu cầu,
+được thiết kế dựa trên diện tích thực tế,
+phong cách sống và sở thích của từng khách hàng.
+
+</p>
+
+</section>
+
+<!-- DỊCH VỤ -->
+
+<section class="section">
+
+<h2>Tùy chỉnh theo mong muốn của bạn</h2>
+
+<div class="custom-grid">
+
+<div class="custom-card">
+
+<h3>📏 Kích thước riêng</h3>
+
+<p>
+
+Điều chỉnh chiều dài, chiều rộng và chiều cao
+phù hợp hoàn toàn với không gian thực tế.
+
+</p>
+
+</div>
+
+<div class="custom-card">
+
+<h3>🎨 Màu sắc đa dạng</h3>
+
+<p>
+
+Lựa chọn màu sơn, màu gỗ,
+màu vải và các chi tiết hoàn thiện theo sở thích.
+
+</p>
+
+</div>
+
+<div class="custom-card">
+
+<h3>🪵 Chất liệu cao cấp</h3>
+
+<p>
+
+Đa dạng lựa chọn từ gỗ tự nhiên,
+gỗ công nghiệp, kim loại và các loại vải cao cấp.
+
+</p>
+
+</div>
+
+<div class="custom-card">
+
+<h3>✨ Cá nhân hóa thiết kế</h3>
+
+<p>
+
+Thay đổi tay nắm,
+đường chỉ may,
+kiểu chân bàn hoặc nhiều chi tiết khác.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- VIDEO -->
+
+<section class="section">
+
+<div class="two-column">
+
+<div class="video">
+
+<iframe
+src="https://www.youtube.com/embed/aqz-KE-bpKQ"
+title="Custom Furniture"
+allowfullscreen>
+</iframe>
+
+</div>
+
+<div class="video-content">
+
+<h2>Sản xuất theo yêu cầu</h2>
+
+<p>
+
+Mỗi sản phẩm đều được chế tác dựa trên yêu cầu riêng,
+đảm bảo tính thẩm mỹ,
+độ bền và phù hợp hoàn hảo với không gian của bạn.
+
+</p>
+
+<ul>
+
+<li>✔ Kích thước theo yêu cầu.</li>
+
+<li>✔ Màu sắc tùy chọn.</li>
+
+<li>✔ Thiết kế độc quyền.</li>
+
+<li>✔ Chất liệu đa dạng.</li>
+
+<li>✔ Bảo hành chính hãng.</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- QUY TRÌNH -->
+
+<section class="section">
+
+<h2>Quy trình đặt hàng</h2>
+
+<div class="process">
+
+<div class="process-step">
+
+<span>1</span>
+
+<h3>Tiếp nhận</h3>
+
+<p>
+
+Lắng nghe ý tưởng,
+kích thước và nhu cầu sử dụng của khách hàng.
+
+</p>
+
+</div>
+
+<div class="process-step">
+
+<span>2</span>
+
+<h3>Thiết kế</h3>
+
+<p>
+
+Lên bản vẽ,
+phối màu và lựa chọn chất liệu phù hợp.
+
+</p>
+
+</div>
+
+<div class="process-step">
+
+<span>3</span>
+
+<h3>Sản xuất</h3>
+
+<p>
+
+Gia công tại xưởng
+với quy trình kiểm soát chất lượng nghiêm ngặt.
+
+</p>
+
+</div>
+
+<div class="process-step">
+
+<span>4</span>
+
+<h3>Giao hàng</h3>
+
+<p>
+
+Lắp đặt tận nơi
+và hướng dẫn sử dụng chi tiết.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<style>
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:20px;
+    margin-top:30px;
+}
+
+.stat{
+    background:#fff;
+    border-radius:18px;
+    padding:28px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.stat h3{
+    color:#b8935a;
+    font-size:34px;
+    margin-bottom:10px;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+    margin-top:30px;
+}
+
+.gallery-item{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.gallery-item:hover{
+    transform:translateY(-8px);
+}
+
+.gallery img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.gallery-content{
+    padding:20px;
+}
+
+.review-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:24px;
+    margin-top:25px;
+}
+
+.review-card{
+    background:#fff;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.review-card h4{
+    margin-bottom:15px;
+}
+
+.faq details{
+    background:#fff;
+    padding:18px 22px;
+    margin-bottom:16px;
+    border-radius:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+
+.faq summary{
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.cta{
+    text-align:center;
+    padding:60px 25px;
+}
+
+.cta h2{
+    margin-bottom:20px;
+}
+
+.cta p{
+    max-width:760px;
+    margin:auto;
+    line-height:1.8;
+}
+
+.cta a{
+    display:inline-block;
+    margin-top:25px;
+    background:#3a2a1a;
+    color:white;
+    text-decoration:none;
+    padding:15px 36px;
+    border-radius:14px;
+    transition:.3s;
+}
+
+.cta a:hover{
+    background:#2b1f15;
+}
+
+</style>
+
+<!-- THỐNG KÊ -->
+
+<section class="section">
+
+<h2>Khách hàng tin tưởng dịch vụ</h2>
+
+<div class="stats">
+
+<div class="stat">
+<h3>1200+</h3>
+<p>Đơn đặt theo yêu cầu</p>
+</div>
+
+<div class="stat">
+<h3>98%</h3>
+<p>Khách hàng hài lòng</p>
+</div>
+
+<div class="stat">
+<h3>15</h3>
+<p>Ngày sản xuất trung bình</p>
+</div>
+
+<div class="stat">
+<h3>24</h3>
+<p>Tháng bảo hành</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- BỘ SƯU TẬP -->
+
+<section class="section">
+
+<h2>Một số sản phẩm nổi bật</h2>
+
+<p>
+
+Mỗi sản phẩm đều được thiết kế và sản xuất theo yêu cầu,
+đáp ứng chính xác kích thước và phong cách của khách hàng.
+
+</p>
+
+<div class="gallery">
+
+<div class="gallery-item">
+
+<img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900">
+
+<div class="gallery-content">
+
+<h3>Sofa theo yêu cầu</h3>
+
+<p>
+
+Tùy chỉnh kích thước,
+màu sắc và chất liệu bọc.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item">
+
+<img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=900">
+
+<div class="gallery-content">
+
+<h3>Bàn ăn gỗ tự nhiên</h3>
+
+<p>
+
+Sản xuất theo số lượng ghế
+và diện tích phòng ăn.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item">
+
+<img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900">
+
+<div class="gallery-content">
+
+<h3>Tủ quần áo</h3>
+
+<p>
+
+Thiết kế vừa vặn với từng không gian,
+tối ưu khả năng lưu trữ.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ĐÁNH GIÁ -->
+
+<section class="section">
+
+<h2>Khách hàng nói gì?</h2>
+
+<div class="review-grid">
+
+<div class="review-card">
+
+<h4>⭐⭐⭐⭐⭐</h4>
+
+<p>
+
+"Sản phẩm đúng với bản thiết kế,
+hoàn thiện rất đẹp và chắc chắn."
+
+</p>
+
+<strong>Nguyễn Minh Đức</strong>
+
+</div>
+
+<div class="review-card">
+
+<h4>⭐⭐⭐⭐⭐</h4>
+
+<p>
+
+"Nhân viên tư vấn rất nhiệt tình,
+kích thước vừa khít với căn hộ."
+
+</p>
+
+<strong>Trần Hải Yến</strong>
+
+</div>
+
+<div class="review-card">
+
+<h4>⭐⭐⭐⭐⭐</h4>
+
+<p>
+
+"Đúng tiến độ,
+chất lượng vượt mong đợi."
+
+</p>
+
+<strong>Phạm Quốc Anh</strong>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FAQ -->
+
+<section class="section faq">
+
+<h2>Câu hỏi thường gặp</h2>
+
+<details>
+
+<summary>Có thể thay đổi kích thước không?</summary>
+
+<p>
+
+Có.
+Mọi sản phẩm đều có thể điều chỉnh theo kích thước thực tế của khách hàng.
+
+</p>
+
+</details>
+
+<details>
+
+<summary>Tôi được chọn màu sắc chứ?</summary>
+
+<p>
+
+Bạn có thể lựa chọn màu gỗ,
+màu sơn,
+màu vải và nhiều chất liệu khác nhau.
+
+</p>
+
+</details>
+
+<details>
+
+<summary>Thời gian hoàn thiện bao lâu?</summary>
+
+<p>
+
+Thông thường từ 10–20 ngày,
+tùy theo độ phức tạp của sản phẩm.
+
+</p>
+
+</details>
+
+</section>
+
+<!-- CTA -->
+
+<section class="section cta">
+
+<h2>Hiện thực hóa ý tưởng của bạn</h2>
+
+<p>
+
+Hãy chia sẻ ý tưởng,
+kích thước và phong cách mong muốn.
+Đội ngũ Mộc & Vàng sẽ giúp bạn tạo nên sản phẩm nội thất độc đáo dành riêng cho không gian sống của mình.
+
+</p>
+
+<a href="/brand/lien-he">
+
+Đặt hàng ngay →
+
+</a>
+
+</section>
+
 </main>
+
 </body>
+
 </html>
+
+
