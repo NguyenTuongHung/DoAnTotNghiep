@@ -1,6 +1,11 @@
 package com.example;
 
-import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
@@ -235,6 +236,10 @@ public class HomeController {
                             @RequestParam(required = false) String minPrice,
                             @RequestParam(required = false) String maxPrice,
                             Model model) {
+        if (!categories.containsKey(slug)) {
+            return "redirect:/";
+        }
+
         List<Map<String, Object>> allProducts = categories.getOrDefault(slug, List.of());
         List<Map<String, Object>> products = new ArrayList<>();
         for (Map<String, Object> product : allProducts) {
@@ -258,8 +263,14 @@ public class HomeController {
         model.addAttribute("maxPrice", maxPrice == null ? "" : maxPrice.trim());
         model.addAttribute("backUrl", "/");
         model.addAttribute("products", products);
-        return "products";
+
+        return switch (slug) {
+            case "phong-khach" -> "products-phong-khach";
+            default -> "products";
+        };
     }
+
+
 
     @GetMapping("/products/{slug}/suggest")
     @ResponseBody
@@ -355,177 +366,51 @@ public class HomeController {
     }
 
     @GetMapping("/service/{slug}")
-    public String servicePage(@PathVariable String slug, Model model) {
-        Map<String, Object> pageData = servicePageData(slug);
-        if (pageData == null) {
+    public String servicePage(@PathVariable String slug) {
+        String template = serviceTemplate(slug);
+        if (template == null) {
             return "redirect:/";
         }
-        model.addAllAttributes(pageData);
-        return "info-page";
+        return template;
     }
 
     @GetMapping("/brand/{slug}")
-    public String brandPage(@PathVariable String slug, Model model) {
-        Map<String, Object> pageData = brandPageData(slug);
-        if (pageData == null) {
+    public String brandPage(@PathVariable String slug) {
+        String template = brandTemplate(slug);
+        if (template == null) {
             return "redirect:/";
         }
-        model.addAllAttributes(pageData);
-        return "info-page";
+        return template;
     }
 
     @GetMapping("/sale")
-    public String salePage(Model model) {
-        model.addAttribute("pageTitle", "Sale đặc biệt");
-        model.addAttribute("pageDescription", "Khám phá những ưu đãi, sản phẩm giảm giá và gợi ý phong cách nội thất với mức giá hấp dẫn.");
-        List<Map<String, Object>> blocks = new ArrayList<>();
-        Map<String, Object> block1 = new LinkedHashMap<>();
-        block1.put("title", "Ưu đãi chọn lọc");
-        block1.put("text", "Các sản phẩm sale được tuyển chọn cẩn thận để vẫn giữ được chất lượng và thiết kế đặc trưng Mộc & Vàng.");
-        blocks.add(block1);
-        Map<String, Object> block2 = new LinkedHashMap<>();
-        block2.put("title", "Giảm giá lên đến 20%");
-        block2.put("items", List.of("Sofa, ghế và bàn trà cho phòng khách","Bộ bàn ăn thanh lịch dành cho gia đình","Phụ kiện và decor hoàn thiện không gian"));
-        blocks.add(block2);
-        model.addAttribute("pageBlocks", blocks);
-        return "info-page";
+    public String salePage() {
+        return "sale";
     }
 
-    private Map<String, Object> servicePageData(String slug) {
+    private String serviceTemplate(String slug) {
         return switch (slug) {
-            case "tu-van-thiet-ke-mien-phi" -> createPageData(
-                    "Tư vấn thiết kế miễn phí",
-                    "Nhận tư vấn không gian nội thất phù hợp với nhu cầu và diện tích thực tế của bạn.",
-                    List.of(
-                            section("Lắng nghe yêu cầu của bạn", "Chúng tôi hiểu rõ thói quen sử dụng và phong cách sống của từng gia đình để đề xuất giải pháp phù hợp."),
-                            section("Phối màu & bố cục", "Gợi ý cách phối màu, kết cấu và cách sắp đặt đồ đạc để tối ưu vẻ đẹp và công năng."),
-                            section("Tối ưu không gian", "Đề xuất giải pháp cho không gian nhỏ, không gian mở hoặc phòng đa năng với chi tiết thực tế.")
-                    )
-            );
-            case "dat-hang-theo-yeu-cau" -> createPageData(
-                    "Đặt hàng theo yêu cầu",
-                    "Chúng tôi hỗ trợ đặt làm nội thất theo kích thước, chất liệu và màu sắc riêng của bạn.",
-                    List.of(
-                            section("Chọn chất liệu thỏa thích", "Lựa chọn gỗ, vải và kim loại phù hợp với phong cách sống và môi trường sử dụng."),
-                            section("Thiết kế chuẩn theo kích thước", "Mọi sản phẩm có thể được điều chỉnh theo kích thước riêng để phù hợp chính xác với không gian của bạn."),
-                            section("Hoàn thiện với phong cách riêng", "Nhu cầu cá nhân được thể hiện trong từng chi tiết, từ tay vịn đến đường chỉ may.")
-                    )
-            );
-            case "giao-hang-lap-dat" -> createPageData(
-                    "Giao hàng & Lắp đặt",
-                    "Dịch vụ giao hàng và lắp đặt trọn gói, giúp bạn nhận sản phẩm đúng hạn và sẵn sàng sử dụng ngay.",
-                    List.of(
-                            section("Giao hàng an toàn", "Sản phẩm được đóng gói kỹ lưỡng, hạn chế va đập trong quá trình vận chuyển."),
-                            section("Lắp đặt chuyên nghiệp", "Đội ngũ lắp đặt có kinh nghiệm sẽ hoàn thiện sản phẩm ngay tại nhà bạn."),
-                            section("Hướng dẫn bảo quản", "Chúng tôi hướng dẫn cách sử dụng và bảo quản để nội thất giữ được độ bền lâu dài.")
-                    )
-            );
-            case "chinh-sach-bao-hanh" -> createPageData(
-                    "Chính sách bảo hành",
-                    "Chúng tôi đem lại sự yên tâm với chính sách bảo hành rõ ràng và trách nhiệm sau bán hàng tận tâm.",
-                    List.of(
-                            section("Bảo hành 12 tháng", "Bảo hành chính hãng cho khung, mối ghép và hoàn thiện bề mặt."),
-                            section("Hỗ trợ sửa chữa", "Hỗ trợ sửa chữa trong trường hợp lỗi kỹ thuật hoặc hỏng hóc do sản xuất."),
-                            section("Chính sách bảo hành minh bạch", "Quy trình bảo hành rõ ràng, không thêm phí ẩn khi sản phẩm thuộc diện bảo hành.")
-                    )
-            );
-            case "doi-tra" -> createPageData(
-                    "Đổi trả",
-                    "Dễ dàng đổi trả trong 30 ngày nếu sản phẩm không phù hợp với không gian hoặc kỳ vọng của bạn.",
-                    List.of(
-                            section("Điều kiện đổi trả", "Sản phẩm còn nguyên vẹn, đầy đủ phụ kiện và chưa qua sử dụng mới có thể đổi trả."),
-                            section("Hỗ trợ nhanh chóng", "Chúng tôi hỗ trợ nhận lại hàng và đổi sang sản phẩm khác phù hợp hơn."),
-                            section("Trải nghiệm an tâm", "Mua sắm tự tin hơn với chính sách đổi trả rõ ràng và linh hoạt.")
-                    )
-            );
-            case "showroom" -> createPageData(
-                    "Showroom",
-                    "Khám phá không gian trưng bày Mộc & Vàng, nơi bạn có thể trải nghiệm sản phẩm thực tế và nhận tư vấn trực tiếp.",
-                    List.of(
-                            section("Không gian trải nghiệm", "Showroom được thiết kế để thể hiện cảm hứng nội thất ấm áp và tinh tế."),
-                            section("Tư vấn tại chỗ", "Đội ngũ tư vấn sẽ đồng hành cùng bạn trong buổi gặp để chọn lựa phong cách phù hợp."),
-                            section("Đặt lịch trước", "Đặt lịch tham quan showroom để có trải nghiệm riêng tư và tốt nhất.")
-                    )
-            );
+            case "tu-van-thiet-ke-mien-phi",
+                    "dat-hang-theo-yeu-cau",
+                    "giao-hang-lap-dat",
+                    "chinh-sach-bao-hanh",
+                    "doi-tra",
+                    "showroom" -> "service/" + slug;
             default -> null;
         };
     }
 
-    private Map<String, Object> brandPageData(String slug) {
+    private String brandTemplate(String slug) {
         return switch (slug) {
-            case "cau-chuyen-cua-chung-toi" -> createPageData(
-                    "Câu chuyện của chúng tôi",
-                    "Từ cảm hứng thiết kế đến xưởng sản xuất, đây là hành trình tạo nên thương hiệu nội thất Mộc & Vàng.",
-                    List.of(
-                            section("Bắt đầu từ đam mê", "Chúng tôi bắt đầu với mong muốn tạo ra nội thất vừa đẹp vừa bền, dành cho không gian sống hiện đại.") ,
-                            section("Giữ vững giá trị thủ công", "Mỗi chi tiết đều được trau chuốt bởi những người thợ tài hoa với niềm tự hào nghề nghiệp."),
-                            section("Phục vụ không gian Việt", "Thiết kế chú trọng tính tiện nghi, thoải mái và phù hợp với thói quen sống của gia đình Việt.")
-                    )
-            );
-            case "xuong-san-xuat" -> createPageData(
-                    "Xưởng sản xuất",
-                    "Xưởng của chúng tôi với quy trình sản xuất khép kín giúp kiểm soát chất lượng từ nguyên liệu đến thành phẩm.",
-                    List.of(
-                            section("Đội ngũ thợ lành nghề", "Các thợ mỹ nghệ có kinh nghiệm nhiều năm, đảm bảo từng đường ghép và lớp hoàn thiện đều chính xác."),
-                            section("Máy móc hỗ trợ chính xác", "Chúng tôi kết hợp máy móc hiện đại với tay nghề thủ công để đạt độ hoàn thiện cao nhất."),
-                            section("Kiểm soát chất lượng", "Mỗi sản phẩm được kiểm tra kỹ lưỡng trước khi rời xưởng để đảm bảo độ bền và thẩm mỹ.")
-                    )
-            );
-            case "cam-ket-ben-vung" -> createPageData(
-                    "Cam kết bền vững",
-                    "Chúng tôi xây dựng thương hiệu với sự tôn trọng môi trường và trách nhiệm với nguồn nguyên liệu.",
-                    List.of(
-                            section("Nguồn gỗ có chứng nhận", "Ưu tiên gỗ có nguồn gốc rõ ràng và được quản lý bền vững."),
-                            section("Thiết kế giảm lãng phí", "Thiết kế thông minh giúp tận dụng vật liệu và giảm phế phẩm trong sản xuất."),
-                            section("Hỗ trợ lâu dài", "Chúng tôi tư vấn bảo quản và sửa chữa để nội thất sử dụng được lâu dài.")
-                    )
-            );
-            case "nhat-ky-thiet-ke" -> createPageData(
-                    "Nhật ký thiết kế",
-                    "Cập nhật những câu chuyện, xu hướng và dự án nội thất mới nhất từ Mộc & Vàng.",
-                    List.of(
-                            section("Dự án tiêu biểu", "Những căn hộ, biệt thự và không gian làm việc được chúng tôi thiết kế và thi công trọn gói."),
-                            section("Xu hướng hiện đại", "Những gam màu, chất liệu và phong cách đang được ưa chuộng trong thiết kế nội thất.") ,
-                            section("Câu chuyện khách hàng", "Những bài học và trải nghiệm từ khách hàng thực tế giúp chúng tôi hoàn thiện dịch vụ.")
-                    )
-            );
-            case "tuyen-dung" -> createPageData(
-                    "Tuyển dụng",
-                    "Cùng Mộc & Vàng tạo ra không gian nội thất có giá trị và bền vững. Chúng tôi tìm kiếm những nhân sự yêu nghề và nhiệt huyết.",
-                    List.of(
-                            section("Vị trí cần tuyển", "Thợ mộc, nhân viên tư vấn nội thất, thiết kế và nhân viên chăm sóc khách hàng."),
-                            section("Môi trường làm việc", "Xưởng thân thiện, sáng tạo và tôn trọng tay nghề từng cá nhân."),
-                            section("Quyền lợi", "Đào tạo, lương cạnh tranh và cơ hội phát triển nghề nghiệp lâu dài.")
-                    )
-            );
-            case "lien-he" -> createPageData(
-                    "Liên hệ",
-                    "Gặp gỡ Mộc & Vàng để nhận tư vấn nhanh chóng và thông tin chi tiết về sản phẩm.",
-                    List.of(
-                            section("Hỗ trợ qua email", "Gửi câu hỏi về đặt hàng và thiết kế đến email của chúng tôi."),
-                            section("Tư vấn qua điện thoại", "Nhận tư vấn trực tiếp về kích thước, chất liệu và cách lên ý tưởng."),
-                            section("Đặt lịch tham quan", "Hẹn lịch đến showroom để trải nghiệm sản phẩm thực tế.")
-                    )
-            );
+            case "cau-chuyen-cua-chung-toi",
+                    "xuong-san-xuat",
+                    "cam-ket-ben-vung",
+                    "nhat-ky-thiet-ke",
+                    "tuyen-dung",
+                    "lien-he" -> "brand/" + slug;
             default -> null;
         };
     }
-
-    private Map<String, Object> createPageData(String title, String description, List<Map<String, Object>> blocks) {
-        Map<String, Object> data = new LinkedHashMap<>();
-        data.put("pageTitle", title);
-        data.put("pageDescription", description);
-        data.put("pageBlocks", blocks);
-        return data;
-    }
-
-    private Map<String, Object> section(String title, String text) {
-        Map<String, Object> section = new LinkedHashMap<>();
-        section.put("title", title);
-        section.put("text", text);
-        return section;
-    }
-
     @GetMapping("/login")
     public String login() {
         return "login";

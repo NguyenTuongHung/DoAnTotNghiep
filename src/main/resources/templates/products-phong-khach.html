@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sản phẩm - Phòng Khách</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: linear-gradient(135deg,#f7f2ea,#efe3d2); color: #3a2a1a; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 40px 24px 60px; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 16px; flex-wrap: wrap; }
+    .badge { display: inline-block; padding: 6px 10px; background: rgba(184,147,90,0.16); color: #b8935a; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 8px; }
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+    .filters { display: flex; gap: 10px; flex-wrap: wrap; }
+    .filters a { text-decoration: none; color: #3a2a1a; background: white; padding: 8px 12px; border-radius: 999px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .card { background: white; border-radius: 16px; padding: 18px; box-shadow: 0 12px 28px rgba(0,0,0,0.08); }
+    .photo { height: 180px; border-radius: 12px; background: linear-gradient(135deg,#e8d8c2,#c6ae8b); display: flex; align-items: center; justify-content: center; font-size: 42px; margin-bottom: 12px; }
+    .card h3 { margin: 6px 0 8px; font-size: 20px; }
+    .card p { color: #7a6a56; line-height: 1.5; margin: 6px 0; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+    .meta span { font-size: 11px; padding: 6px 8px; background: #f7efe5; border-radius: 999px; }
+    .price { font-weight: 700; font-size: 18px; color: #3a2a1a; margin: 10px 0 12px; }
+    .btn { display: inline-block; padding: 10px 14px; background: #b8935a; color: white; text-decoration: none; border-radius: 8px; }
+    .btn:hover { background: #9f7743; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.16em; color:#b8935a; margin-bottom:6px;">Danh mục</div>
+        <h1 style="margin:0 0 8px; font-size:34px;">Phòng Khách</h1>
+        <div style="color:#7a6a56; max-width:620px; line-height:1.6;">Sofa, ghế thư giãn, bàn trà và phụ kiện sang trọng.</div>
+      </div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <a href="/" style="color:#3a2a1a; text-decoration:none;">← Quay lại trang chủ</a>
+        <a href="/cart" style="color:#b8935a; text-decoration:none;">🛒 Xem giỏ hàng</a>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="filters">
+        <a href="/products/phong-khach">Phòng khách</a>
+        <a href="/products/phong-an">Phòng ăn</a>
+        <a href="/products/phong-ngu">Phòng ngủ</a>
+        <a href="/products/phu-kien">Phụ kiện</a>
+        <a href="/products/van-phong">Văn phòng</a>
+      </div>
+      <form th:action="@{'/products/phong-khach'}" method="get" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <input type="text" name="q" placeholder="Tìm kiếm sản phẩm..." style="border:1px solid #e2d3b8; border-radius:999px; padding:10px 14px; min-width:220px;" />
+        <button type="submit" style="border:none; background:#b8935a; color:white; border-radius:999px; padding:10px 16px; cursor:pointer;">Tìm kiếm</button>
+      </form>
+    </div>
+
+    <div class="grid">
+      <div class="card" th:each="product : ${products}">
+        <div class="photo" th:text="${product.name.substring(0,1)}">S</div>
+        <div class="badge" th:text="${product.category}">Danh mục</div>
+        <h3 th:text="${product.name}">Tên sản phẩm</h3>
+        <p th:text="${product.description}">Mô tả</p>
+        <div class="meta">
+          <span th:text="${product.material}">Chất liệu</span>
+          <span th:text="${product.feature1}">Đặc điểm</span>
+        </div>
+        <div class="price" th:text="${product.price}">Giá</div>
+        <a class="btn" th:href="@{'/product/' + ${product.slug}}">Xem chi tiết</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

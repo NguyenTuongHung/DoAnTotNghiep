@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(pageTitle, pageDescription, pageContent)">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,15 +35,7 @@
       <p th:text="${pageDescription}">Mô tả ngắn về trang.</p>
     </div>
 
-    <div th:each="block : ${pageBlocks}">
-      <div class="section">
-        <h2 th:text="${block.title}">Tiêu đề</h2>
-        <p th:if="${block.text}" th:text="${block.text}">Nội dung chi tiết.</p>
-        <ul th:if="${block.items}">
-          <li th:each="item : ${block.items}" th:text="${item}">Mục danh sách</li>
-        </ul>
-      </div>
-    </div>
+    <div th:replace="${pageContent}"></div>
 
     <div class="section callout">
       <strong>Đã sẵn sàng khám phá?</strong>
