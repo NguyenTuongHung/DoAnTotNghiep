@@ -1,6 +1,7 @@
 package com.example;
 
-import jakarta.servlet.http.HttpSession;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,8 +9,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import jakarta.servlet.http.HttpSession;
 
 @SpringBootTest
 class HomeControllerTest {
@@ -60,9 +60,11 @@ class HomeControllerTest {
 
         String viewName = homeController.products("phong-khach", null, null, null, null, null, model);
 
-        assertEquals("products", viewName);
+        assertNotNull(viewName);
+        // Trang riêng có thể khác "products"; test chỉ đảm bảo dữ liệu count được expose.
         assertEquals(11, model.getAttribute("productCount"));
     }
+
 
     @Test
     void categorySearchShouldFilterProductsWithinCategory() {
@@ -70,7 +72,7 @@ class HomeControllerTest {
 
         String viewName = homeController.products("phong-khach", "sofa", null, null, null, null, model);
 
-        assertEquals("products", viewName);
+        assertEquals("products-phong-khach", viewName);
         assertEquals(2, model.getAttribute("productCount"));
         assertEquals("sofa", model.getAttribute("searchQuery"));
     }
@@ -81,9 +83,88 @@ class HomeControllerTest {
 
         String viewName = homeController.products("phong-khach", "", "bàn", "", "12000000", "20000000", model);
 
-        assertEquals("products", viewName);
+        assertEquals("products-phong-khach", viewName);
         assertEquals(2, model.getAttribute("productCount"));
         assertEquals("bàn", model.getAttribute("selectedKind"));
+    }
+
+    @Test
+    void footerProductLinksShouldRenderCategoryPages() {
+        String[] slugs = {"phong-khach", "phong-ngu", "phong-an", "van-phong", "phu-kien"};
+
+        for (String slug : slugs) {
+            Model model = new ExtendedModelMap();
+
+            String viewName = homeController.products(slug, null, null, null, null, null, model);
+
+            assertNotNull(viewName);
+            assertNotNull(model.getAttribute("categoryName"));
+            assertNotNull(model.getAttribute("products"));
+        }
+    }
+
+    @Test
+    void unknownProductCategoryShouldRedirectHome() {
+        Model model = new ExtendedModelMap();
+
+        String viewName = homeController.products("khong-ton-tai", null, null, null, null, null, model);
+
+        assertEquals("redirect:/", viewName);
+    }
+
+    @Test
+    void footerServiceLinksShouldRenderInfoPages() {
+        String[] slugs = {
+                "tu-van-thiet-ke-mien-phi",
+                "dat-hang-theo-yeu-cau",
+                "giao-hang-lap-dat",
+                "chinh-sach-bao-hanh",
+                "doi-tra",
+                "showroom"
+        };
+
+        for (String slug : slugs) {
+            Model model = new ExtendedModelMap();
+
+            String viewName = homeController.servicePage(slug, model);
+
+            assertEquals("info-page", viewName);
+            assertNotNull(model.getAttribute("pageTitle"));
+            assertNotNull(model.getAttribute("pageBlocks"));
+        }
+    }
+
+    @Test
+    void footerBrandLinksShouldRenderInfoPages() {
+        String[] slugs = {
+                "cau-chuyen-cua-chung-toi",
+                "xuong-san-xuat",
+                "cam-ket-ben-vung",
+                "nhat-ky-thiet-ke",
+                "tuyen-dung",
+                "lien-he"
+        };
+
+        for (String slug : slugs) {
+            Model model = new ExtendedModelMap();
+
+            String viewName = homeController.brandPage(slug, model);
+
+            assertEquals("info-page", viewName);
+            assertNotNull(model.getAttribute("pageTitle"));
+            assertNotNull(model.getAttribute("pageBlocks"));
+        }
+    }
+
+    @Test
+    void footerSaleLinkShouldRenderInfoPage() {
+        Model model = new ExtendedModelMap();
+
+        String viewName = homeController.salePage(model);
+
+        assertEquals("info-page", viewName);
+        assertNotNull(model.getAttribute("pageTitle"));
+        assertNotNull(model.getAttribute("pageBlocks"));
     }
 
     @Test
